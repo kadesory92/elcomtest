@@ -1,19 +1,19 @@
 <?php
-// Database connection details
+// Сведения о подключении к базе данных
 $servername = "localhost";
 $username = "root";
 $password = '';
 $dbname = "dbTest4";
 
-// Create connection
+// Создать соединение
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
+// Проверьте подключение
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// SQL query to retrieve data
+// SQL-запрос для извлечения данных
 $sql = "SELECT T1.Name AS Name, T2.Price2, T2.Price2 AS 'Price2 2', T2.Price2 AS 'Price2 3'
         FROM Table1 T1
         JOIN Table2 T2 ON T1.Product_ID = T2.Product_ID
@@ -38,7 +38,7 @@ $result = $conn->query($sql);
             </thead>
             <tbody>
                 <?php
-                    // Output data from the database
+                    // Вывод данных из базы данных
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                     echo "<tr>
@@ -49,7 +49,7 @@ $result = $conn->query($sql);
                         </tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='4'>No results found</td></tr>";
+                    echo "<tr><td colspan='4'>Результатов не найдено</td></tr>";
                 }
                 ?>
             </tbody>
@@ -57,7 +57,7 @@ $result = $conn->query($sql);
     </div>
 
     <?php
-    // Close the database connection
+    // Закройте подключение к базе данных
     $conn->close();
     ?>
 

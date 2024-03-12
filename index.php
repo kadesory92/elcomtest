@@ -11,10 +11,10 @@ $array = array(
 $res = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupérer la valeur de $var depuis le formulaire
+    // Получить значение $var из формы
     $var = $_POST['var'];
 
-    // Vérifier si la valeur de $var existe dans le tableau
+    // Проверьте, существует ли значение $var в массиве
     if (isset($array[$var])) {
         $res = "Полученное значение равно : ".$array[$var];
     } else {

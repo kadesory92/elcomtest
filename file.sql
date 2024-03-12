@@ -38,7 +38,7 @@ INSERT INTO Table2 (ID, Name, Value) VALUES
 (20, 'Шесть', 600),
 (10, 'Семь', 700);
 
-
+--Решение:
 
 SELECT Table2.ID, Table2.Name, Table2.Value
 FROM Table2
