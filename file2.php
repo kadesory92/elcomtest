@@ -1,16 +1,14 @@
 <?php
 // Сведения о подключении к базе данных
-$servername = "localhost";
-$username = "root";
+// Подключение к базе данных
+$dsn = 'mysql:host=localhost;dbname=dbTest4';
+$username = 'root';
 $password = '';
-$dbname = "dbTest4";
 
-// Создать соединение
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Проверьте подключение
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $pdo = new PDO($dsn, $username, $password);
+} catch (PDOException $e) {
+    echo 'Connection failed: ' . $e->getMessage();
 }
 
 // Ваш SQL-запрос
@@ -35,7 +33,7 @@ WHERE
 t2.Price2 = 2000";
 
 // Выполнение запроса
-$result = $conn->query($sql);
+$stmt = $pdo->query($sql);
 
 ?>
 
@@ -57,8 +55,8 @@ $result = $conn->query($sql);
             <tbody>
                 <?php
                     // Вывод данных из базы данных
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
+                if ($stmt->rowCount() > 0) {
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo "<tr>";
                         echo "<td>" . $row['Name'] . "</td>";
                         echo "<td>" . $row['Name'] . "</td>";
@@ -68,18 +66,17 @@ $result = $conn->query($sql);
                         echo "<td>" . $row['Price2_3'] . "</td>";
                         echo "</tr>";
                     }
+                    //Закрытие соединения с базой данных
+                    $pdo = null;
                 } else {
                     echo "<tr><td colspan='4'>Результатов не найдено</td></tr>";
                 }
+                //Закрытие соединения с базой данных (вынесено за пределы условия)
+                $pdo = null;
                 ?>
             </tbody>
         </table>
     </div>
-
-    <?php
-    // Закройте подключение к базе данных
-    $conn->close();
-    ?>
 
 <?php 
 $content=ob_get_clean(); 
