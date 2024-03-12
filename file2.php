@@ -13,12 +13,28 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// SQL-запрос для извлечения данных
-$sql = "SELECT T1.Name AS Name, T2.Price2, T2.Price2 AS 'Price2 2', T2.Price2 AS 'Price2 3'
-        FROM Table1 T1
-        JOIN Table2 T2 ON T1.Product_ID = T2.Product_ID
-        WHERE T2.Price2 = 2000";
+// Ваш SQL-запрос
+$sql = "SELECT
+t1.Name AS Name,
+t2.Price2 AS Price2,
+t2.Price2_2 AS Price2_2,
+t2.Price2_3 AS Price2_3
+FROM
+Table1 t1
+JOIN
+(
+    SELECT
+        Product_ID,
+        Price2,
+        Price2 AS Price2_2,
+        Price2 AS Price2_3
+    FROM
+        Table2
+) t2 ON t1.Product_ID = t2.Product_ID
+WHERE
+t2.Price2 = 2000";
 
+// Выполнение запроса
 $result = $conn->query($sql);
 
 ?>
@@ -31,6 +47,8 @@ $result = $conn->query($sql);
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Name 2</th>
+                    <th>Name 3</th>
                     <th>Price2</th>
                     <th>Price2 2</th>
                     <th>Price2 3</th>
@@ -40,13 +58,15 @@ $result = $conn->query($sql);
                 <?php
                     // Вывод данных из базы данных
                 if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>{$row['Name']}</td>
-                            <td>{$row['Price2']}</td>
-                            <td>{$row['Price2 2']}</td>
-                            <td>{$row['Price2 3']}</td>
-                        </tr>";
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row['Name'] . "</td>";
+                        echo "<td>" . $row['Name'] . "</td>";
+                        echo "<td>" . $row['Name'] . "</td>";
+                        echo "<td>" . $row['Price2'] . "</td>";
+                        echo "<td>" . $row['Price2_2'] . "</td>";
+                        echo "<td>" . $row['Price2_3'] . "</td>";
+                        echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='4'>Результатов не найдено</td></tr>";
